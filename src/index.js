@@ -27,7 +27,8 @@ const myLogger = async function (req, res, next) {
       });
       return;
     }
-  }
+  }else
+    next();
 };
 app.use(myLogger);
 
@@ -38,6 +39,7 @@ db.sequelize.sync();
 //routes
 app.use("/user/", require("./routes/user.routes.js"));
 app.use("/resturants/", require("./routes/geo.routes.js"));
+app.use("/history/", require("./routes/history.routes.js"));
 
 //start server
 app.listen(app.get("port"), () => {
