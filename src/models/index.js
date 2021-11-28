@@ -21,6 +21,8 @@ db.sequelize = sequelize;
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.auth = require("./auth.model.js")(sequelize, Sequelize);
+db.history = require("./history.model.js")(sequelize, Sequelize);
 db.user.hasMany(db.auth);
+db.history.hasMany(db.auth);
 
 module.exports = db;

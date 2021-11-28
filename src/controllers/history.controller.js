@@ -1,16 +1,9 @@
 const validation = require("../utils/validation.utils");
 const api = require("../utils/api.utils");
+const db = require("../models");
+const History = db.history;
 
-exports.restaurants = async (req, res) => {
-  // Validate request
-  const empty_fields = validation.validateData(req.query, ["lat", "lon"]);
-
-  if (empty_fields.length !== 0) {
-    res.status(400).send({
-      message: `${empty_fields.join(", ")} can not be empty`,
-    });
-    return;
-  }
+exports.getHistory = async (req, res) => {
   const logIn = await validation.logIn(req);
   if (!logIn) {
     res.status(401).send({
@@ -27,4 +20,8 @@ exports.restaurants = async (req, res) => {
     return;
   }
   res.send({ next_page_token: api_response.data.next_page_token, results: api_response.data.results });
+};
+
+exports.createHistory = async (req, userId) => {
+  return History.create({ url: req.url.toString(), userId: userId });
 };

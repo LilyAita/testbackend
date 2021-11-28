@@ -1,8 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
-  const Auth = sequelize.define("auth", {
-    token: {
+  const History = sequelize.define("history", {
+    url: {
       type: Sequelize.TEXT,
     },
   });
-  return Auth;
+  return History;
 };

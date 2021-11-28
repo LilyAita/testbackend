@@ -10,8 +10,8 @@ const isUniqueUser = async username => {
 
 exports.signup = async (req, res) => {
   // Validate request
-  const empty_fields = validation.validate_data(req, ["username", "password", "fullname", "repassword"]);
-
+  const empty_fields = validation.validateData(req.body, ["username", "password", "fullname", "repassword"]);
+  console.log(empty_fields);
   if (empty_fields.length !== 0) {
     res.status(400).send({
       message: `${empty_fields.join(", ")} can not be empty`,
@@ -46,7 +46,7 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const empty_fields = validation.validate_data(req, ["username", "password"]);
+  const empty_fields = validation.validateData(req.body, ["username", "password"]);
 
   if (empty_fields.length !== 0) {
     res.status(400).send({
@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  const empty_fields = validation.validate_data(req, ["refreshToken"]);
+  const empty_fields = validation.validateData(req.body, ["refreshToken"]);
 
   if (empty_fields.length !== 0) {
     res.status(400).send({
@@ -91,24 +91,25 @@ exports.logout = async (req, res) => {
     });
     return;
   }
-  Auth.destroy({ where: { token: req.body.refreshToken } }).then(num => {
+  Auth.destroy({ where: { token: req.body.refreshToken } })
+    .then(num => {
       if (num == 1) {
         res.status(204).send();
       } else {
         res.send({
-          message: `Cannot delete Token. Maybe Token was not found!`
+          message: `Cannot delete Token. Maybe Token was not found!`,
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || "Some error occurred while delete the RefreshToken."
+        message: err.message || "Some error occurred while delete the RefreshToken.",
       });
     });
 };
 
 exports.refreshToken = async (req, res) => {
-  const empty_fields = validation.validate_data(req, ["refreshToken"]);
+  const empty_fields = validation.validateData(req.body, ["refreshToken"]);
 
   if (empty_fields.length !== 0) {
     res.status(400).send({
@@ -116,19 +117,20 @@ exports.refreshToken = async (req, res) => {
     });
     return;
   }
-  Auth.findOne({ where: { token: req.body.refreshToken } }).then( auth => {
+  Auth.findOne({ where: { token: req.body.refreshToken } })
+    .then(auth => {
       if (auth) {
         const user = User.findByPk(auth.dataValues.userId);
-        res.send({accessToken: jwt.generateAccessToken(user)});
+        res.send({ accessToken: jwt.generateAccessToken(user) });
       } else {
         res.status(400).send({
-          message: "Token was not found!"
+          message: "Token was not found!",
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || "Some error occurred while refresh the RefreshToken."
+        message: err.message || "Some error occurred while refresh the RefreshToken.",
       });
     });
 };
