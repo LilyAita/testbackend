@@ -167,4 +167,4 @@ Body Request:
 }
 ```
 ## Trabajo futuro
-Pruebas - Crear roles para que el usuario con rol administrativo pueda mirar toda la historia de transacciones
+Pruebas - Crear roles para que el usuario con rol administrativo pueda mirar toda el historial de transacciones
