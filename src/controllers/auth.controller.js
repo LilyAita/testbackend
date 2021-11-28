@@ -11,7 +11,6 @@ const isUniqueUser = async username => {
 exports.signup = async (req, res) => {
   // Validate request
   const empty_fields = validation.validateData(req.body, ["username", "password", "fullname", "repassword"]);
-  console.log(empty_fields);
   if (empty_fields.length !== 0) {
     res.status(400).send({
       message: `${empty_fields.join(", ")} can not be empty`,
